@@ -1,8 +1,13 @@
 const fs = require("fs");
 const inquirer = require("inquirer");
 
+const Employee = require("./lib/Employee");
+const Manager = require("./lib/Manager");
+const Engineer = require("./lib/Engineer");
+const Intern = require("./lib/Intern");
 
-
+var manager;
+var employees = [];
 
 function inputManager(){
     let questions = [
@@ -24,7 +29,7 @@ function inputManager(){
         }
     ]
     inquirer.prompt(questions).then(response => {
-        console.log(response);
+        manager = new Manager(response.name, response.id, response.email, response.office);
     })
 }
 
