@@ -113,10 +113,129 @@ function inputManager(){
     })
 }
 
+function managerHtml(){
+    let html = 
+`
+<div
+    class="card shadow float-start"
+    style="width: 18rem; margin: 10px"
+>
+    <div class="card-body bg-primary text-white">
+        <h5 class="card-title">${manager.getName()}</h5>
+        <p class="card-text">☕ ${manager.getRole()}</p>
+    </div>
+    <div class="card-body">
+        <ul class="list-group list-group-flush border">
+            <li class="list-group-item">ID: ${manager.getId()}</li>
+            <li class="list-group-item">Email: <a href="mailto:${manager.getEmail()}">${manager.getEmail()}</a></li>
+            <li class="list-group-item">
+                Office number: ${manager.getOfficeNumber()}
+            </li>
+        </ul>
+    </div>
+</div>
+`;
+    return html;
+}
+
+function employeeHtml(){
+    let html = "";
+    for(let i = 0; i < employees.length; i++){
+        if(employees[i].getRole() === "Engineer"){ //start Engineer html
+            html += 
+`
+<div
+    class="card shadow float-start"
+    style="width: 18rem; margin: 10px"
+>
+    <div class="card-body bg-primary text-white">
+        <h5 class="card-title">${employees[i].getName()}</h5>
+        <p class="card-text">👓 ${employees[i].getRole()}</p>
+    </div>
+    <div class="card-body">
+        <ul class="list-group list-group-flush border">
+            <li class="list-group-item">ID: ${employees[i].getId()}</li>
+            <li class="list-group-item">Email: <a href="mailto:${employees[i].getEmail()}">${employees[i].getEmail()}</a></li>
+            <li class="list-group-item">
+                GitHub: <a href="https://github.com/${employees[i].getGithub()}">${employees[i].getGithub()}</a>
+            </li>
+        </ul>
+    </div>
+</div>
+`;
+        } //end Engineer html
+        else if(employees[i].getRole() === "Intern"){ //start Intern html
+            html += 
+`
+<div
+    class="card shadow float-start"
+    style="width: 18rem; margin: 10px"
+>
+    <div class="card-body bg-primary text-white">
+        <h5 class="card-title">${employees[i].getName()}</h5>
+        <p class="card-text">📚 ${employees[i].getRole()}</p>
+    </div>
+    <div class="card-body">
+        <ul class="list-group list-group-flush border">
+            <li class="list-group-item">ID: ${employees[i].getId()}</li>
+            <li class="list-group-item">Email: <a href="mailto:${employees[i].getEmail()}">${employees[i].getEmail()}</a></li>
+            <li class="list-group-item">
+                School: ${employees[i].getSchool()}
+            </li>
+        </ul>
+    </div>
+</div>
+`;            
+        } //end Intern html
+        else{ //if somehow neither Intern nor Engineer, meaning something went wrong
+            html +=
+`<h1>Something went wrong! Employee role not recognized!</h1>`;
+        }
+    }
+    
+    return html;
+}
+
 function generateHtml(){
-    console.log("Html will be generated (TODO) using:");
-    console.log(manager);
-    console.log(employees);
+    let html = 
+`
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Team Profile Generator</title>
+		<link
+			href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css"
+			rel="stylesheet"
+			integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl"
+			crossorigin="anonymous"
+		/>
+	</head>
+	<body>
+		<h1
+			class="position-relative start-50 translate-middle-x p-5 bg-danger w-100 text-center text-white"
+		>
+			My Team
+		</h1>
+		<div class="container position-relative">
+			${managerHtml()}
+			${employeeHtml()}
+		</div>
+	</body>
+</html>
+`;
+    
+    fs.writeFile("./dist/index.html", html, err => {
+        if(err){
+            console.log(err);
+            return err;
+        }
+        else{
+            console.log("index.html file successfully generated in dist/ directory!")
+        }
+    })
 }
 
 inputManager();
